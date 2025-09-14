@@ -4,13 +4,23 @@ project(httpserver
     DESCRIPTION "A neat httpserver"
     LANGUAGES CXX
 )
+
+# Set output directories
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_subdirectory(proj/src/http)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(httpserver proj/src/main.cpp)
-target_include_directories(httpserver PRIVATE proj/include)
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS 
+    proj/src/*.cpp
+    proj/HTTP/*.cpp
+)
 
-target_link_libraries(httpserver PRIVATE http)
+add_executable(${PROJECT_NAME} ${SOURCES})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/proj/include)
+
+
